@@ -209,4 +209,4 @@ stack traces from the single-file build still point at the right line.
 
 ## Licence
 
-MIT — see [`LICENSE`](LICENSE). Copyright (c) 2025 Umut Sever.
+MIT — see [`LICENSE`](LICENSE). Copyright (c) 2026 Umut Sever.
