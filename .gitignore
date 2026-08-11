@@ -9,6 +9,10 @@ Thumbs.db
 .env.*
 *.pem
 *.key
-dist/.syntax-check.js
+
+# Build output. `npm run bundle` regenerates dist/homefront.html byte-for-byte
+# from src/, so the artefact is never committed.
+dist/
+
 coverage/
 *.tmp
