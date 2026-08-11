@@ -1,0 +1,41 @@
+{
+  "name": "homefront-universe",
+  "version": "0.1.0",
+  "description": "A deterministic real-time space fleet simulation with a WebGL2 renderer, written from scratch with no runtime dependencies.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Umut Sever",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umutseve4/homefront-universe.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "src",
+    "tools",
+    "dist",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test tests/sim.test.mjs tests/mesh.test.mjs tests/gfx.test.mjs tests/renderer.test.mjs tests/ui.test.mjs tests/main.test.mjs",
+    "validate": "node tools/validate.mjs",
+    "bundle": "node tools/bundle.mjs",
+    "checkbundle": "node tools/checkbundle.mjs",
+    "headless": "node tools/headless.mjs",
+    "verify": "npm run validate && npm test && npm run bundle && npm run checkbundle",
+    "serve": "node tools/serve.mjs"
+  },
+  "keywords": [
+    "simulation",
+    "webgl2",
+    "rts",
+    "deterministic",
+    "no-dependencies"
+  ],
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,0 +1,83 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20.x', '22.x', '24.x']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Report toolchain
+        run: node --version
+
+      # No dependencies, so there is nothing to install. This step exists to
+      # make that fact visible rather than implicit.
+      - name: Assert zero runtime dependencies
+        run: |
+          node -e "
+            const p = require('./package.json');
+            const d = Object.keys(p.dependencies || {}).length;
+            const v = Object.keys(p.devDependencies || {}).length;
+            if (d || v) { console.error('unexpected dependencies:', d, v); process.exit(1); }
+            console.log('dependencies: 0 runtime, 0 dev');
+          "
+
+      - name: Static validation
+        run: npm run validate
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build single-file bundle
+        run: npm run bundle
+
+      - name: Verify emitted bundle
+        run: npm run checkbundle
+
+      # Determinism is the core promise of the simulation, so it is asserted in
+      # CI rather than trusted. Two separate processes on the same runtime must
+      # produce an identical checksum.
+      - name: Assert run-to-run determinism
+        run: |
+          A=$(node tools/headless.mjs 1337 3 3000 | grep -o 'checksum=[0-9]*')
+          B=$(node tools/headless.mjs 1337 3 3000 | grep -o 'checksum=[0-9]*')
+          echo "run A: $A"
+          echo "run B: $B"
+          if [ "$A" != "$B" ]; then echo "non-deterministic across runs"; exit 1; fi
+          echo "determinism holds on $(node --version)"
+
+      # The recorded baseline is only pinned on the version it was measured on.
+      # Math.sin/Math.cos are not required to be bit-identical across engine
+      # versions, so pinning the value on every row of the matrix would be an
+      # unverified claim. Cross-version drift is reported, not failed.
+      - name: Compare against recorded baseline
+        continue-on-error: ${{ matrix.node != '24.x' }}
+        run: |
+          C=$(node tools/headless.mjs 1337 3 3000 | grep -o 'checksum=[0-9]*')
+          if [ "$C" != "checksum=985466095" ]; then
+            echo "checksum $C differs from recorded baseline checksum=985466095"
+            exit 1
+          fi
+          echo "baseline matches"
+
+      - name: Upload bundle
+        if: matrix.node == '24.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: homefront-bundle
+          path: dist/homefront.html
+          if-no-files-found: error

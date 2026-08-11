@@ -1,0 +1,14 @@
+node_modules/
+npm-debug.log*
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+.env
+.env.*
+*.pem
+*.key
+dist/.syntax-check.js
+coverage/
+*.tmp
