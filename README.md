@@ -1,120 +1,204 @@
-# HOMEFRONT: UNIVERSE
+# HomeFront Universe
 
-A Homeworld-style, universe-scale real-time strategy game. Full 3D fleet
-movement, procedurally generated ship hulls, generative textures, GPU
-instancing and a hand-written GLSL renderer — running in a browser with
-**zero dependencies**. No Three.js, no npm, no build step required.
+A deterministic 3D real-time strategy simulation for the browser: a fixed-timestep fleet-combat
+sim with an economy, a squad AI, and a WebGL2 renderer, built from first principles with **zero
+runtime and zero build dependencies**.
 
-Random skirmish only (no campaign), 2–4 factions, 5 map styles.
+The whole game ships as one self-contained HTML file — `dist/homefront.html`, 120 486 bytes —
+produced by a bundler written for this repository (`tools/bundle.mjs`, ~200 lines).
 
-## Play
+> **Note on this repository's history.** The previous README described a project structure
+> (`src/`, `tests/`, `tools/`, `dist/`, a single-file WebGL2 bundle) that did not exist — the repo
+> contained only that README. Everything now in the tree was written and executed to replace that
+> description with working code. The "What is and is not verified" section below is deliberately
+> blunt about the boundary of what has actually been proven.
 
-Open `dist/homefront-universe.html` — a single standalone file. It runs
-straight from `file://`. Nothing to install, no server needed.
+---
 
-Requires a browser with **WebGL2** (Chrome/Edge/Firefox/Safari 15+).
+## Quick start
+
+```bash
+git clone https://github.com/umutseve4/homefront-universe.git
+cd homefront-universe
+
+npm run verify     # validate + test + bundle + checkbundle
+npm run serve      # http://127.0.0.1:8080/dist/homefront.html
+```
+
+Requires **Node.js >= 20** (developed and measured on v24.18.1). No `npm install` step — there are
+no dependencies, so `node_modules/` never gets created.
+
+To run the simulation with no browser and no renderer at all:
+
+```bash
+node tools/headless.mjs 1337 3 3000     # seed, factions, ticks
+```
+
+---
+
+## Measured results
+
+Every number below was produced by running the command named next to it. None are estimates.
+
+| Metric | Value | Produced by |
+|---|---|---|
+| Unit tests | **239 pass / 0 fail**, 34 652 ms | `npm test` |
+| Static contract checks | **564 checks over 18 modules**, all pass | `npm run validate` |
+| Bundle structure checks | **16 / 16 pass** | `npm run checkbundle` |
+| Bundle size | **120 486 bytes** (117.7 KiB), 18 modules, 151 top-level bindings | `npm run bundle` |
+| Simulation throughput | **~730 ticks/s** (3000 ticks in 4111 ms, single-threaded) | `npm run headless` |
+| Determinism, 3000 ticks | `checksum=985466095`, identical across repeated runs | `node tools/headless.mjs 1337 3 3000` |
+| Determinism, 9000 ticks | `checksum=3814631718` | `node tools/headless.mjs 1337 3 9000` |
+
+The 3000-tick reference run (seed `1337`, 3 factions) ends with Kushan 2480 / Taiidan 1165 /
+Bentusi 485 resources, `over=false winner=-1`.
+
+Determinism is not a claim about floating-point identity across CPUs. It means: **same seed, same
+tick count, same engine ⇒ same checksum**, which is what the test suite and CI assert.
+
+---
+
+## What is and is not verified
+
+This is the part most project READMEs get wrong, so it is stated first-class.
+
+**Verified by execution:**
+
+- The simulation, economy, AI, mesh generation, camera maths, renderer command generation, input
+  handling and HUD drawing all run under Node and are covered by 239 assertions.
+- The renderer and HUD are tested against *assertive fakes*: a fake WebGL context that throws on
+  drawing without a bound program or VAO, on zero-instance draws, and on `bufferSubData` past
+  buffer capacity; and a fake 2D context that throws on NaN coordinates, negative rectangles,
+  `"NaN"`/`"undefined"` appearing in drawn text, and unbalanced `save`/`restore`.
+- The GLSL↔JavaScript attribute contract (locations, types, strides, divisors) is checked
+  statically by `tools/validate.mjs`. This check is *negative-tested*: injecting a deliberately
+  wrong attribute type and a forbidden `export default` makes it report exactly those two
+  failures and exit non-zero.
+- `dist/homefront.html` is structurally verified (single inline script, strict mode, IIFE, no
+  `import`/`export` survivors, required DOM ids present) and syntax-checked with `node --check`.
+- `tools/serve.mjs` was run and answered: `200` with `content-length: 120486` for the bundle,
+  `404` for a path-traversal attempt, `404` for a missing file.
+
+**Not verified — do not assume these work:**
+
+1. **The GLSL has never been compiled by a real GPU driver.** There is no GPU or browser in the
+   environment this was built in. The shaders are validated as *text* against the buffer layouts
+   the JavaScript sets up; a driver may still reject them.
+2. **`start()` in `src/main.js` has never executed.** It requires `document` and
+   `requestAnimationFrame`. Its pure helpers (`readOptions`, `makeFpsMeter`, `pointerRecord`,
+   `applyOrder`, `winnerName`) are tested; the frame loop itself is not.
+3. **`dist/homefront.html` has never been opened in a browser.**
+4. `.github/workflows/ci.yml` has never run.
+5. `package.json` has never been parsed by npm — the underlying `node --test` command is what was
+   verified.
+
+Opening the bundle in a browser is the single highest-value next step, and it is the one thing
+that could not be done here.
+
+---
 
 ## Controls
 
 | Input | Action |
 |---|---|
-| Left drag | Band-select ships |
-| Left click | Select / click empty space to deselect |
-| Right click | Move, attack, or harvest (context sensitive) |
-| Shift + right click | Queue an order |
-| Middle drag / Alt drag | Orbit camera |
-| Scroll | Zoom (14 m cockpit → 40 km strategic) |
-| Q / E | Raise and lower the movement plane |
-| Ctrl + 1..9 | Assign control group |
-| 1..9 | Recall control group |
-| F | Focus camera on selection |
-| Tab | Cycle formation |
-| Space | Pause |
-| ? | Controls card |
+| Left-drag | Box-select ships |
+| Left-click | Select ship |
+| Double-click | Select all ships of the same type |
+| Right-drag | Orbit camera |
+| Middle-drag | Pan camera |
+| Wheel | Zoom |
+| Right-click on empty space | Move order |
+| Right-click on enemy | Attack order |
+| Right-click on asteroid | Harvest order |
+| `1`–`9` | Queue a unit from the build menu |
+| `Space` | Pause / resume |
+| `+` / `-` | Simulation speed |
 
-Ships move in **full 3D**. Right-click sets an X/Z destination; `Q`/`E`
-slide that destination up and down the vertical axis before you commit,
-which is how you get above or below an enemy fleet.
+URL parameters, parsed by `readOptions()`: `?seed=1337&factions=3&speed=1&paused=1`.
 
-## Ship classes
-
-Ten hulls across four tiers, with a rock–paper–scissors armour table
-(`src/sim/defs.js` is the single balance source of truth):
-
-- **Fighters** — scout, interceptor, bomber
-- **Corvettes** — corvette
-- **Frigates** — flak frigate, ion frigate
-- **Capitals** — destroyer, carrier, mothership
-- **Support** — resource collector
-
-Interceptors shred fighters; bombers gut capitals but die to interceptors;
-flak frigates erase fighter swarms; ion frigates burn capitals. Fielding one
-ship type is a losing strategy.
+---
 
 ## Architecture
 
+18 ES modules in four layers, an acyclic import graph, no framework.
+
 ```
-src/core/    math.js  rng.js                    deterministic primitives
-src/sim/     defs world movement combat         headless simulation,
-             economy ai mapgen game             zero rendering imports
-src/gfx/     gl procgen meshgen shaders         WebGL2 + GLSL renderer
-             particles postfx camera renderer
-src/ui/      input.js  hud.js                   controls and 2D overlay
-tools/       bundle.mjs validate.mjs headless.mjs
-tests/       sim.test.mjs  mesh.test.mjs
-```
+src/core/    math.js      vectors, 4×4 matrices, unproject, ray/sphere, ray/plane
+             rng.js       seedable PRNG — the only source of randomness
 
-The simulation layer imports **nothing** from `gfx/` or the DOM, so the
-entire game state can be stepped and tested under plain Node.
+src/sim/     defs.js      unit definitions, faction colours, RULES
+             world.js     entity storage, spatial hash grid
+             movement.js  steering, formations, geodesic rotation
+             combat.js    weapons, damage, shields, beams
+             economy.js   harvesting, resources, production queues
+             ai.js        per-faction squad behaviour
+             mapgen.js    seeded asteroid fields and start positions
+             game.js      fixed-timestep driver, orders API, checksum
 
-### Determinism
+src/gfx/     meshgen.js   procedural hulls and spheres, no asset files
+             camera.js    orbit camera with target/live smoothing split
+             shaders.js   8 GLSL ES 3.00 programs as strings
+             gl.js        thin WebGL2 wrapper (VAOs, buffers, programs)
+             renderer.js  instanced hulls, line overlays, starfield, post pass
 
-Same seed produces the same match. Entity ids and presentation seeds come
-from a salted world counter, never a module global; combat jitter is a hash
-of `(entityId, tick)` rather than a random stream; asteroid tumble is derived
-from the sim clock instead of accumulated per frame. Visual particle spawns
-are the deliberate exception — they are presentation-only.
+src/ui/      input.js     pointer/keyboard state, picking, drag box, orders
+             hud.js       2D canvas HUD, build menu, minimap
 
-### Rendering
-
-- Procedural ship meshes generated at load from lofted blueprints, 3 LODs
-  each, LOD selected by **projected screen size** so it is stable across
-  zoom and resolution.
-- Generative PBR texture arrays (albedo / normal / ORM) — no image assets
-  ship with the game.
-- GPU instancing throughout; hull draws are bucketed by `type + lod`, so a
-  200-ship battle is a handful of draw calls.
-- Pass order: sky → hulls → asteroids → depth blit → shields → beams →
-  lines → particles → post.
-- Post chain: bright-pass → separable blur pyramid → tent upsample →
-  composite (bloom, exposure, vignette, grain, chroma, colour grade) → FXAA.
-- Soft particles read a blitted depth copy, avoiding a feedback loop from
-  sampling the bound depth attachment.
-
-## Development
-
-```bash
-node tests/sim.test.mjs      # 27 simulation tests
-node tests/mesh.test.mjs     # 20 geometry tests
-node tools/validate.mjs      # 57 shader/module contract checks
-node tools/headless.mjs      # runs the real engine against a mock WebGL2
-node tools/bundle.mjs        # emit the single-file build
+src/main.js               entry point, frame loop, wiring
 ```
 
-`tools/headless.mjs` stands up a minimal DOM and a recording WebGL2 mock
-that parses the actual GLSL to answer uniform introspection. It executes the
-real bundle — asset build, hundreds of frames, HUD hit-testing, orders — and
-fails on missing uniforms, unmocked GL entry points or non-finite floats in
-the instance stream. It cannot validate a single pixel; it validates
-everything that would throw before a pixel exists.
+Rendering is three pipelines: **instanced hulls** (20 floats per instance — a 4×4 model matrix at
+attribute locations 2–5 plus a tint vec4 at 6, stride 80, divisor 1), **line overlays** (7 floats
+per vertex, additive, depth-write off), and a **starfield** (2600 stars, interleaved
+`[x, y, z, brightness]`, stride 16). Tint alpha carries the damage fraction, which is how hulls
+flash without a second draw call.
 
-## Status
+Two maths conventions coexist in `src/core/math.js` and mixing them up is the easiest way to break
+this codebase: **vector helpers return new arrays**, while **matrix helpers take `out` as the first
+argument**. `docs/ARCHITECTURE.md` documents this, the buffer contracts, the rejected alternatives
+(ECS, Web Workers, a real bundler), and the bugs the test suite actually caught.
 
-Machine-verified: simulation, geometry, module and shader contracts, and a
-full headless run of the engine. **Shaders have not been compiled by a real
-GPU driver** in the build environment — no browser was available — so visual
-tuning of the nebula, shield and lighting constants is expected on first run.
+### The bundler
 
-## License
+`tools/bundle.mjs` inlines the module graph into one HTML file. It is a text transformer, not a
+parser, so the source is restricted to what it can safely handle — and `tools/validate.mjs`
+enforces those restrictions:
 
-MIT
+- imports only as single-line `import { a, b } from './x.js';`
+- exports only as `export function` / `export const` / `export class`
+- no default exports, no re-exports, no `export { … }` blocks
+- acyclic graph, no duplicate exported names across modules
+
+Import lines are replaced with blank lines, so line numbers in the bundle match the source files —
+stack traces from the single-file build still point at the right line.
+
+---
+
+## Scripts
+
+| Command | Purpose |
+|---|---|
+| `npm test` | 239 unit tests across six files |
+| `npm run validate` | 564 static contract checks, incl. GLSL↔JS attribute layouts |
+| `npm run bundle` | Build `dist/homefront.html` |
+| `npm run checkbundle` | 16 structural + syntax checks on the built bundle |
+| `npm run headless` | Run the sim with no renderer, print the result table and checksum |
+| `npm run serve` | Static file server on 127.0.0.1:8080 |
+| `npm run verify` | validate → test → bundle → checkbundle |
+
+---
+
+## Known limitations
+
+- Single-threaded; the simulation and rendering share one frame budget.
+- No networking, no save/load, no campaign — this is a skirmish sandbox.
+- The AI is behavioural, not strategic: it harvests, defends and attacks, but does not plan.
+- No audio.
+- Collision is avoidance-only; ships can overlap under heavy congestion.
+- The post-processing pass is a single full-screen program, not a chain.
+
+---
+
+## Licence
+
+MIT — see [`LICENSE`](LICENSE). Copyright (c) 2025 Umut Sever.
