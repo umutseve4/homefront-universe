@@ -4,8 +4,13 @@ A deterministic 3D real-time strategy simulation for the browser: a fixed-timest
 sim with an economy, a squad AI, and a WebGL2 renderer, built from first principles with **zero
 runtime and zero build dependencies**.
 
-The whole game ships as one self-contained HTML file — `dist/homefront.html`, 120 486 bytes —
+The whole game builds into one self-contained HTML file — `dist/homefront.html`, 120 486 bytes —
 produced by a bundler written for this repository (`tools/bundle.mjs`, ~200 lines).
+
+> **`dist/` is not committed.** It is generated output, so it is not in version control. A fresh
+> clone has no `dist/` directory until you run `npm run bundle` (or `npm run verify`, which builds
+> it as one of its steps). The build is deterministic: the same source produces the same
+> 120 486-byte file every time, and `npm run checkbundle` verifies it.
 
 > **Note on this repository's history.** The previous README described a project structure
 > (`src/`, `tests/`, `tools/`, `dist/`, a single-file WebGL2 bundle) that did not exist — the repo
@@ -21,9 +26,12 @@ produced by a bundler written for this repository (`tools/bundle.mjs`, ~200 line
 git clone https://github.com/umutseve4/homefront-universe.git
 cd homefront-universe
 
-npm run verify     # validate + test + bundle + checkbundle
+npm run verify     # validate + test + bundle + checkbundle  (this creates dist/)
 npm run serve      # http://127.0.0.1:8080/dist/homefront.html
 ```
+
+`npm run serve` only has something to serve *after* a build, so run `npm run verify` (or at least
+`npm run bundle`) first.
 
 Requires **Node.js >= 20** (developed and measured on v24.18.1). No `npm install` step — there are
 no dependencies, so `node_modules/` never gets created.
