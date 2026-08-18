@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1030" viewBox="0 0 900 1030" font-family="ui-monospace,Consolas,monospace">
+<rect width="900" height="1030" fill="#0b0e14"/>
+<rect x="40" y="40" width="820" height="820" fill="#101522" stroke="#2a3350"/>
+<text x="40" y="26" fill="#e6e9f0" font-size="20">homefront-universe — headless skirmish, seed=1337, factions=3, tick=3000</text>
+<circle cx="525.6" cy="232.1" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="261.2" cy="413.9" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="262.4" cy="499.0" r="3.1" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="667.5" cy="383.3" r="2.2" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="479.2" cy="347.2" r="3.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="518.3" cy="286.4" r="2.1" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="507.3" cy="160.8" r="2.4" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="268.6" cy="427.6" r="2.9" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="461.0" cy="636.8" r="2.8" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="260.4" cy="618.2" r="2.4" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="347.5" cy="480.8" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="339.2" cy="304.3" r="3.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="286.3" cy="283.5" r="2.7" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="533.1" cy="292.4" r="2.1" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="277.7" cy="466.5" r="2.5" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="171.6" cy="376.8" r="2.1" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="559.8" cy="449.2" r="2.3" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="343.3" cy="462.9" r="2.3" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="362.9" cy="190.6" r="2.1" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="452.7" cy="300.1" r="2.7" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="592.2" cy="571.1" r="3.1" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="681.8" cy="594.7" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="505.6" cy="260.7" r="2.6" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="500.8" cy="565.0" r="2.3" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="244.5" cy="582.3" r="2.3" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="625.3" cy="442.8" r="2.8" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="546.3" cy="424.1" r="2.7" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="224.6" cy="627.2" r="2.2" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="595.1" cy="371.5" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="499.2" cy="274.6" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="659.9" cy="319.8" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="412.4" cy="279.1" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="326.4" cy="343.2" r="2.9" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="355.6" cy="210.4" r="2.2" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="421.4" cy="610.1" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="351.5" cy="454.6" r="2.2" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="190.8" cy="487.9" r="2.1" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="369.8" cy="613.4" r="2.7" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="494.9" cy="339.6" r="2.8" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="213.7" cy="285.4" r="2.1" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="296.7" cy="382.0" r="3.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="424.4" cy="643.2" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="743.9" cy="475.8" r="2.2" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="677.8" cy="435.8" r="2.5" fill="#8a8f98" fill-opacity="0.47" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="686.0" cy="474.2" r="2.7" fill="#8a8f98" fill-opacity="0.66" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="716.1" cy="484.2" r="3.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="660.7" cy="429.9" r="2.4" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="747.9" cy="436.5" r="2.9" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="350.1" cy="655.0" r="2.6" fill="#8a8f98" fill-opacity="0.64" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="295.8" cy="691.8" r="2.2" fill="#8a8f98" fill-opacity="0.42" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="292.1" cy="642.3" r="3.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="314.4" cy="623.0" r="2.6" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="326.3" cy="622.6" r="2.4" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="313.4" cy="621.5" r="2.2" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="308.8" cy="254.7" r="2.0" fill="#8a8f98" fill-opacity="0.26" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="312.5" cy="280.7" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="357.7" cy="211.4" r="2.3" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="313.6" cy="194.3" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="277.5" cy="247.2" r="2.0" fill="#8a8f98" fill-opacity="0.70" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="312.0" cy="202.8" r="2.9" fill="#8a8f98" fill-opacity="0.65" stroke="#565b64" stroke-width="0.5"/>
+<circle cx="686.5" cy="444.1" r="10" fill="rgb(56,158,255)" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="686.5" cy="444.1" r="16" fill="none" stroke="rgb(56,158,255)" stroke-width="1" stroke-opacity="0.6"/>
+<rect x="675.5" y="433.7" width="6" height="6" fill="rgb(56,158,255)"/>
+<rect x="675.2" y="433.3" width="6" height="6" fill="rgb(56,158,255)"/>
+<rect x="675.7" y="433.7" width="6" height="6" fill="rgb(56,158,255)"/>
+<circle cx="691.8" cy="454.4" r="2.6" fill="rgb(56,158,255)"/>
+<circle cx="687.6" cy="451.6" r="2.6" fill="rgb(56,158,255)"/>
+<circle cx="693.0" cy="461.7" r="2.6" fill="rgb(56,158,255)"/>
+<circle cx="688.6" cy="454.0" r="2.6" fill="rgb(56,158,255)"/>
+<circle cx="694.0" cy="459.4" r="2.6" fill="rgb(56,158,255)"/>
+<circle cx="694.9" cy="459.5" r="2.6" fill="rgb(56,158,255)"/>
+<circle cx="685.9" cy="455.6" r="2.6" fill="rgb(56,158,255)"/>
+<circle cx="679.1" cy="460.7" r="2.6" fill="rgb(56,158,255)"/>
+<circle cx="316.9" cy="668.9" r="10" fill="rgb(255,92,61)" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="316.9" cy="668.9" r="16" fill="none" stroke="rgb(255,92,61)" stroke-width="1" stroke-opacity="0.6"/>
+<rect x="298.8" y="681.5" width="6" height="6" fill="rgb(255,92,61)"/>
+<rect x="301.2" y="679.2" width="6" height="6" fill="rgb(255,92,61)"/>
+<rect x="303.4" y="676.4" width="6" height="6" fill="rgb(255,92,61)"/>
+<circle cx="553.8" cy="532.0" r="2.6" fill="rgb(255,92,61)"/>
+<circle cx="557.2" cy="530.8" r="2.6" fill="rgb(255,92,61)"/>
+<circle cx="317.3" cy="229.1" r="10" fill="rgb(250,209,64)" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="317.3" cy="229.1" r="16" fill="none" stroke="rgb(250,209,64)" stroke-width="1" stroke-opacity="0.6"/>
+<rect x="311.5" y="231.5" width="6" height="6" fill="rgb(250,209,64)"/>
+<rect x="313.3" y="231.9" width="6" height="6" fill="rgb(250,209,64)"/>
+<rect x="312.6" y="228.3" width="6" height="6" fill="rgb(250,209,64)"/>
+<circle cx="555.1" cy="365.9" r="2.6" fill="rgb(250,209,64)"/>
+<circle cx="558.5" cy="367.0" r="2.6" fill="rgb(250,209,64)"/>
+<rect x="294.2" y="687.1" width="6" height="6" fill="rgb(255,92,61)"/>
+<rect x="310.1" y="209.5" width="6" height="6" fill="rgb(250,209,64)"/>
+<rect x="309.7" y="671.9" width="6" height="6" fill="rgb(255,92,61)"/>
+<rect x="306.3" y="249.8" width="6" height="6" fill="rgb(250,209,64)"/>
+<circle cx="507.3" cy="340.0" r="2.6" fill="rgb(250,209,64)"/>
+<circle cx="321.6" cy="229.8" r="2.6" fill="rgb(250,209,64)"/>
+<text x="40" y="908" fill="#9aa3b5" font-size="14">legend: ● combat ship   ■ collector   ◎ production ship   ○ asteroid (opacity = remaining resource)</text>
+<circle cx="46" cy="929" r="6" fill="rgb(56,158,255)"/>
+<text x="60" y="934" fill="#e6e9f0" font-size="14">Kushan — alive, ships=12, resources=2480, harvested=1080, killed=12, lost=0</text>
+<circle cx="46" cy="951" r="6" fill="rgb(255,92,61)"/>
+<text x="60" y="956" fill="#e6e9f0" font-size="14">Taiidan — alive, ships=8, resources=1165, harvested=1200, killed=0, lost=6</text>
+<circle cx="46" cy="973" r="6" fill="rgb(250,209,64)"/>
+<text x="60" y="978" fill="#e6e9f0" font-size="14">Bentusi — alive, ships=10, resources=485, harvested=1560, killed=0, lost=6</text>
+<text x="860" y="1016" fill="#5b647a" font-size="12" text-anchor="end">checksum(t=3000) = 985466095</text>
+</svg>
