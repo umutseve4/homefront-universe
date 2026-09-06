@@ -1,10 +1,25 @@
-# HomeFront Universe
+<h1 align="center">HomeFront Universe</h1>
 
-A deterministic, fixed-timestep fleet-combat simulation with an economy, squad AI, and a WebGL2 renderer. The repository implements its simulation, renderer, validation, test, bundle, and static-server tooling directly in JavaScript.
+<p align="center">
+  A fleet-combat simulation that always produces the same battle from the same seed.<br>
+  Economy, squad AI, and a WebGL2 renderer — and a checksum that proves<br>
+  the fight replayed identically, tick for tick.
+</p>
 
-> **Evidence boundary:** `package.json` currently declares **0 runtime dependencies and 0 development dependencies**. That is a statement about npm package dependencies—not a claim that the project has no platform requirements. Running the tooling requires **Node.js >= 20**, and the interactive client requires browser APIs including WebGL2 and Canvas 2D.
+<p align="center">
+  <a href="https://github.com/umutseve4/homefront-universe/actions"><img src="https://github.com/umutseve4/homefront-universe/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/determinism%20checksum-985466095-FF4D4F?style=flat-square" alt="checksum 985466095">
+  <img src="https://img.shields.io/badge/ES%20modules-18-FF4D4F?style=flat-square" alt="18 modules">
+  <img src="https://img.shields.io/badge/npm%20dependencies-0-FF4D4F?style=flat-square" alt="0 dependencies">
+</p>
 
-## Quick start
+<p align="center">
+  <img src="docs/figures/skirmish_t3000.svg" alt="Skirmish state at t=3000" width="640">
+</p>
+
+---
+
+## Run it in 60 seconds
 
 ```bash
 git clone https://github.com/umutseve4/homefront-universe.git
@@ -13,19 +28,42 @@ npm run verify
 npm run serve
 ```
 
-Then open `http://127.0.0.1:8080/dist/homefront.html`.
+Open `http://127.0.0.1:8080/dist/homefront.html`.
 
-No dependency-install step is required for the checked-in scripts because both npm dependency maps are empty. `npm run verify` performs static validation, unit tests, bundling, and bundle checks; it also creates the untracked `dist/homefront.html` output.
+No install step is needed — both npm dependency maps are empty. `npm run verify`
+runs static validation, unit tests, bundling, and bundle checks, and produces the
+untracked `dist/homefront.html`.
 
-For a renderer-free simulation run:
+Renderer-free run:
 
 ```bash
 node tools/headless.mjs 1337 3 3000
 ```
 
-## Verification surface
+## The determinism contract
 
-The repository exposes these reproducible checks:
+The workflow compares the Node.js `24.x` reference run of
+`node tools/headless.mjs 1337 3 3000` against `checksum=985466095`, then runs the
+same command **twice on every matrix runtime** and requires matching checksums
+within that runtime.
+
+> **same seed + same tick count + same engine runtime => same checksum.**
+> This does *not* claim bit-identical floating-point behavior across all CPUs or
+> JavaScript engines.
+
+## Simulation state, visualized
+
+Generated from simulation state by `node tools/render_map_svg.mjs`. These are
+deterministic top-down state visualizations — not proof the WebGL2 client rendered
+in a browser.
+
+| t=0 — seeded start | t=1500 — economy running | t=3000 — battle state |
+|---|---|---|
+| ![t=0](docs/figures/skirmish_t0.svg) | ![t=1500](docs/figures/skirmish_t1500.svg) | ![t=3000](docs/figures/skirmish_t3000.svg) |
+
+The t=3000 SVG embeds checksum `985466095`, matching the recorded headless baseline.
+
+## Verification surface
 
 | Command | Contract |
 |---|---|
@@ -36,55 +74,9 @@ The repository exposes these reproducible checks:
 | `npm run headless` | Renderer-free simulation with result table and checksum |
 | `npm run verify` | `validate -> test -> bundle -> checkbundle` |
 
-The CI workflow runs repository checks on pushes to `main`, pull requests targeting `main`, and manual dispatches. Its current matrix covers Node.js `20.x`, `22.x`, and `24.x`; CI results are evidence for the exact commit tested, not proof of browser rendering or production readiness.
-
-### Recorded deterministic baseline
-
-The checked-in workflow compares the Node.js `24.x` reference run
-
-```bash
-node tools/headless.mjs 1337 3 3000
-```
-
-against `checksum=985466095`. It also runs the same command twice on each matrix runtime and requires matching checksums within that runtime. This contract means **same seed + same tick count + same engine runtime => same checksum**; it does not claim bit-identical floating-point behavior across all CPUs or JavaScript engines.
-
-## Visual state evidence
-
-The SVG snapshots below are generated from simulation state by `tools/render_map_svg.mjs`. They are deterministic top-down state visualizations, not proof that the WebGL2 client rendered successfully in a browser.
-
-```bash
-node tools/render_map_svg.mjs
-```
-
-| t=0 — seeded start | t=1500 — economy running | t=3000 — battle state |
-|---|---|---|
-| ![t=0](docs/figures/skirmish_t0.svg) | ![t=1500](docs/figures/skirmish_t1500.svg) | ![t=3000](docs/figures/skirmish_t3000.svg) |
-
-The t=3000 SVG embeds checksum `985466095`, matching the recorded headless baseline.
-
-## Architecture
-
-The codebase contains 18 ES modules arranged in four layers:
-
-```text
-src/core/    math.js, rng.js
-src/sim/     defs.js, world.js, movement.js, combat.js, economy.js,
-             ai.js, mapgen.js, game.js
-src/gfx/     meshgen.js, camera.js, shaders.js, gl.js, renderer.js
-src/ui/      input.js, hud.js
-src/main.js  browser entry point and frame loop
-```
-
-Key design choices:
-
-- fixed-timestep deterministic simulation;
-- seeded PRNG as the simulation's randomness source;
-- procedural meshes and starfield;
-- WebGL2 instanced rendering plus Canvas 2D HUD;
-- a repository-local text-transform bundler that emits one HTML file;
-- a headless path for deterministic simulation checks without a renderer.
-
-`docs/ARCHITECTURE.md` documents module boundaries, buffer contracts, rejected alternatives, and implementation constraints.
+CI runs on pushes to `main`, pull requests targeting `main`, and manual dispatch,
+across Node.js `20.x`, `22.x`, and `24.x`. CI results are evidence for the exact
+commit tested — not proof of browser rendering or production readiness.
 
 ## Controls
 
@@ -105,34 +97,57 @@ Key design choices:
 
 URL options are parsed by `readOptions()`: `?seed=1337&factions=3&speed=1&paused=1`.
 
-## What automated checks do and do not prove
+<details>
+<summary><b>Architecture — 18 modules in four layers</b></summary>
 
-### Covered by repository checks
+```text
+src/core/    math.js, rng.js
+src/sim/     defs.js, world.js, movement.js, combat.js, economy.js,
+             ai.js, mapgen.js, game.js
+src/gfx/     meshgen.js, camera.js, shaders.js, gl.js, renderer.js
+src/ui/      input.js, hud.js
+src/main.js  browser entry point and frame loop
+```
 
-- simulation, economy, AI, mesh generation, camera math, renderer command generation, input helpers, and HUD logic under Node-based tests;
-- static GLSL-to-JavaScript attribute-contract checks;
-- emitted bundle structure and JavaScript syntax;
-- repeatability of the headless checksum on the same tested runtime;
-- package scripts executed through npm in CI.
+Key design choices:
 
-### Not established by those checks
+- fixed-timestep deterministic simulation;
+- seeded PRNG as the simulation's randomness source;
+- procedural meshes and starfield;
+- WebGL2 instanced rendering plus Canvas 2D HUD;
+- a repository-local text-transform bundler that emits one HTML file;
+- a headless path for deterministic simulation checks without a renderer.
 
-- successful shader compilation by a real GPU driver;
-- successful execution of the browser `start()` frame loop;
-- visual correctness in a real browser;
-- accessibility, frame-rate, or cross-device behavior;
-- networking, persistence, campaign gameplay, or production operations.
+`docs/ARCHITECTURE.md` documents module boundaries, buffer contracts, rejected
+alternatives, and implementation constraints.
 
-A real-browser/GPU acceptance pass remains the highest-value missing validation. Until that evidence exists, this repository should be presented as a deterministic prototype with automated Node-level verification—not as a production-ready game.
+</details>
 
-## Known limitations
+## Limits
 
-- Single-threaded simulation and rendering.
-- No networking, save/load, campaign, or audio.
-- Behavioral rather than strategic AI.
-- Avoidance-only collision handling.
-- Single-pass post-processing.
+**Evidence boundary:** `package.json` declares **0 runtime and 0 development
+dependencies**. That is a statement about npm packages — not about platform
+requirements. The tooling needs **Node.js >= 20**; the interactive client needs
+browser APIs including WebGL2 and Canvas 2D.
 
-## License
+**Established by repository checks:** simulation, economy, AI, mesh generation,
+camera math, renderer command generation, input helpers and HUD logic under Node
+tests; static GLSL-to-JavaScript attribute contracts; emitted bundle structure and
+syntax; headless checksum repeatability on the tested runtime.
+
+**Not established:** shader compilation by a real GPU driver; execution of the
+browser `start()` frame loop; visual correctness in a real browser; accessibility,
+frame-rate, or cross-device behavior; networking, persistence, campaign gameplay,
+or production operations.
+
+Known limitations: single-threaded simulation and rendering; no networking,
+save/load, campaign, or audio; behavioral rather than strategic AI; avoidance-only
+collision handling; single-pass post-processing.
+
+A real-browser/GPU acceptance pass remains the highest-value missing validation.
+Until that evidence exists, this is a deterministic prototype with automated
+Node-level verification — not a production-ready game.
+
+---
 
 MIT — see [`LICENSE`](LICENSE). Copyright (c) 2026 Umut Sever.
